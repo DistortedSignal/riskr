@@ -1,7 +1,15 @@
 from jinja2 import Template
 from flask import Flask, Response
 
+import sys
 import os
+
+def get_size_of_dict(dict_to_size):
+    size_in_bytes = sys.getsizeof(dict_to_size)
+    for a in dict_to_size.keys():
+        size_in_bytes += sys.getsizeof(dict_to_size[a])
+    return size_in_bytes
+
 
 def add_template_to_dict(template_dir, template_name, template_dict):
     template_dict[template_name] = Template(open(template_dir + os.sep +
@@ -76,4 +84,8 @@ if __name__ == "__main__":
     template_dictionary = load_templates(os.getcwd() + os.sep + 'templates')
     css_dictionary = load_css(os.getcwd() + os.sep + 'css')
     js_dictionary = load_js(os.getcwd() + os.sep + 'js')
+    print "Estimated size of cached objects: " + str(
+        get_size_of_dict(template_dictionary) + 
+        get_size_of_dict(css_dictionary) + get_size_of_dict(js_dictionary)) + \
+    " bytes"
     app.run()
