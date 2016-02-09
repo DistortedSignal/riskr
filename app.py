@@ -1,4 +1,5 @@
-from flask import Flask
+from jinja2 import Template
+from flask import Flask, Response
 
 import os
 
@@ -6,45 +7,58 @@ import os
 # time that I need to serve a page, so I'm going to load the files at app
 # initialization.
 def load_templates(template_directory):
-    templates = {}
-    templates['user'] = open(template_directory + os.sep + 'user.jinja').read()
-    templates['post'] = open(template_directory + os.sep + 'post.jinja').read()
-    templates['container'] = open(template_directory + os.sep +
-        'container.jinja').read()
-    templates['comment'] = open(template_directory + os.sep + 
-        'comment.jinja').read()
-    templates['comment_box'] = open(template_directory + os.sep +
-        'comment_box.jinja').read()
-    return templates
+    template_dictionary = {}
+    template_dictionary['user'] = Template(open(template_directory + os.sep +
+        'user.jinja').read())
+    template_dictionary['post'] = Template(open(template_directory + os.sep +
+        'post.jinja').read())
+    template_dictionary['container'] = Template(open(template_directory +
+        os.sep + 'container.jinja').read())
+    template_dictionary['comment'] = Template(open(template_directory + os.sep +
+        'comment.jinja').read())
+    template_dictionary['comment_box'] = Template(open(template_directory + 
+        os.sep + 'comment_box.jinja').read())
+    return template_dictionary
 
 def load_css(css_directory):
     css_dictionary = {}
     # TODO Switch this based on cmd line flag
-    css_dictionary['bootstrap.css'] = open('css' + os.sep +
+    css_dictionary['bootstrap.css'] = open(css_directory + os.sep +
         'bootstrap.css').read()
-    css_dictionary['bootstrap-reactive.css'] = open('css' + os.sep +
-        'bootstrap-reactive.css').read()
+    css_dictionary['bootstrap-responsive.css'] = open(css_directory + os.sep +
+        'bootstrap-responsive.css').read()
+    return css_dictionary
 
 def load_js(js_directory):
-    pass
+    js_dictionary = {}
+    # TODO Switch this based on cmd line flag
+    return js_dictionary
+
+def get_static_file(content, mime_type):
+    print "Content: " + content
+    resp = Response(content, mimetype=mime_type)
+    print str(resp)
+    return resp
 
 app = Flask(__name__)
 
 @app.route("/css/<css_file_name>")
 def load_css_file(css_file_name):
-    return css_dictionary['css_file_name']
+    print "Returning " + css_file_name
+    return get_static_file(css_dictionary['css_file_name'], 'text/css')
 
 @app.route("/js/<js_file_name>")
 def load_js_file(js_file_name):
-    return js_dictionary['js_file_name']
+    print "Returning " + js_file_name
+    return get_static_file(js_dictionary['js_file_name'], 'text/javascript')
 
 @app.route("/#")
 @app.route("/")
-def get_main():
-    return "Hello World!"
+def index():
+    return template_dictionary['container'].render()
 
 if __name__ == "__main__":
-    template_dictionary = load_templates()
-    css_dictionary = load_css()
-    js_dictionary = load_js()
+    template_dictionary = load_templates(os.getcwd() + os.sep + 'templates')
+    css_dictionary = load_css(os.getcwd() + os.sep + 'css')
+    js_dictionary = load_js(os.getcwd() + os.sep + 'js')
     app.run()
