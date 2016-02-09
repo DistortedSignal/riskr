@@ -4,6 +4,26 @@ from flask import Flask, Response
 import sys
 import os
 
+class User(object):
+    object.name = ""
+    object.picture = "" # This is going to be a blob eventually.
+
+class Comment(object):
+    object.user = User()
+    object.text = ""
+    object.date = ""
+
+class Post(object):
+    object.user = User()
+    object.title = ""
+    object.body = ""
+    object.comments = []
+    object.date = ""
+
+class Context(object):
+    object.user = User()
+    object.posts = []
+
 def get_size_of_dict(dict_to_size):
     size_in_bytes = sys.getsizeof(dict_to_size)
     for a in dict_to_size.keys():
@@ -66,7 +86,12 @@ def get_static_file(content, mime_type):
     return resp
 
 def render_main():
-    context = {'user': {'name':'Tom Kelley'}, 'posts': ['a', 'b', 'c']}
+    user = {'name': 'Tom Kelley'}
+    comment = {'user': user, 'text': 'This is comment text'}
+    post = {'user': user, 'title': 'This is post title', 
+    'body': 'This is the post body, which can be quite long.', 
+    'comments': [comment]}
+    context = {'user': user, 'posts': [post]}
     return template_dictionary['container'].render(
         page_content=template_dictionary['main'].render(context=context))
 
