@@ -10,7 +10,6 @@ def get_size_of_dict(dict_to_size):
         size_in_bytes += sys.getsizeof(dict_to_size[a])
     return size_in_bytes
 
-
 def add_template_to_dict(template_dir, template_name, template_dict):
     template_dict[template_name] = Template(open(template_dir + os.sep +
         template_name + '.jinja').read())
@@ -25,6 +24,7 @@ def load_templates(template_directory):
     add_template_to_dict(template_directory, 'container', template_dictionary)
     add_template_to_dict(template_directory, 'comment', template_dictionary)
     add_template_to_dict(template_directory, 'comment_box', template_dictionary)
+    add_template_to_dict(template_directory, 'main', template_dictionary)
     return template_dictionary
 
 # Yes, this function uses side effects of adding items to a dict to influence
@@ -65,6 +65,10 @@ def get_static_file(content, mime_type):
     resp = Response(content, mimetype=mime_type)
     return resp
 
+def render_main():
+    return template_dictionary['container'].render(
+        page_content=template_dictionary['main'].render())
+
 app = Flask(__name__)
 
 @app.route("/css/<css_file_name>")
@@ -78,7 +82,7 @@ def load_js_file(js_file_name):
 @app.route("/#")
 @app.route("/")
 def index():
-    return template_dictionary['container'].render()
+    return render_main()
 
 if __name__ == "__main__":
     template_dictionary = load_templates(os.getcwd() + os.sep + 'templates')
