@@ -1,3 +1,13 @@
-<h1>Bootstrap starter template</h1>
-<p>Use this document as a way to quick start any new project.<br>
-All you get is this message and a barebones HTML document.</p>
+<div>
+<!-- put the user image here -->
+<p>{{ context.user.name|e }}</p>
+</div>
+
+<h1>Risks</h1>
+
+
+<div>
+{% for post in context.posts %}
+<p>{{ post|e }}</p>
+{% endfor %}
+</div>

@@ -66,8 +66,9 @@ def get_static_file(content, mime_type):
     return resp
 
 def render_main():
+    context = {'user': {'name':'Tom Kelley'}, 'posts': ['a', 'b', 'c']}
     return template_dictionary['container'].render(
-        page_content=template_dictionary['main'].render())
+        page_content=template_dictionary['main'].render(context=context))
 
 app = Flask(__name__)
 
