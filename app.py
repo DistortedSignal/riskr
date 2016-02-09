@@ -4,26 +4,6 @@ from flask import Flask, Response
 import sys
 import os
 
-class User(object):
-    object.name = ""
-    object.picture = "" # This is going to be a blob eventually.
-
-class Comment(object):
-    object.user = User()
-    object.text = ""
-    object.date = ""
-
-class Post(object):
-    object.user = User()
-    object.title = ""
-    object.body = ""
-    object.comments = []
-    object.date = ""
-
-class Context(object):
-    object.user = User()
-    object.posts = []
-
 def get_size_of_dict(dict_to_size):
     size_in_bytes = sys.getsizeof(dict_to_size)
     for a in dict_to_size.keys():
