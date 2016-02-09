@@ -23,10 +23,10 @@ def load_templates(template_directory):
 def load_css(css_directory):
     css_dictionary = {}
     # TODO Switch this based on cmd line flag
-    css_dictionary['bootstrap.css'] = open(css_directory + os.sep +
-        'bootstrap.css').read()
-    css_dictionary['bootstrap-responsive.css'] = open(css_directory + os.sep +
-        'bootstrap-responsive.css').read()
+    css_dictionary['bootstrap.css'] = unicode(open(css_directory + os.sep +
+        'bootstrap.css').read())
+    css_dictionary['bootstrap-responsive.css'] = unicode(open(css_directory +
+        os.sep + 'bootstrap-responsive.css').read())
     return css_dictionary
 
 def load_js(js_directory):
@@ -35,22 +35,18 @@ def load_js(js_directory):
     return js_dictionary
 
 def get_static_file(content, mime_type):
-    print "Content: " + content
     resp = Response(content, mimetype=mime_type)
-    print str(resp)
     return resp
 
 app = Flask(__name__)
 
 @app.route("/css/<css_file_name>")
 def load_css_file(css_file_name):
-    print "Returning " + css_file_name
-    return get_static_file(css_dictionary['css_file_name'], 'text/css')
+    return get_static_file(css_dictionary[css_file_name], 'text/css')
 
 @app.route("/js/<js_file_name>")
 def load_js_file(js_file_name):
-    print "Returning " + js_file_name
-    return get_static_file(js_dictionary['js_file_name'], 'text/javascript')
+    return get_static_file(js_dictionary[js_file_name], 'text/javascript')
 
 @app.route("/#")
 @app.route("/")
