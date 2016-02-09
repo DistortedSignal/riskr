@@ -1,0 +1,20 @@
+class User(object):
+    object.name = ""
+    object.picture = "" # This is going to be a blob eventually.
+
+class Comment(object):
+    object.user = User()
+    object.text = ""
+    object.date = ""
+
+class Post(object):
+    object.user = User()
+    object.title = ""
+    object.body = ""
+    object.comments = []
+    object.date = ""
+
+class Context(object):
+    object.user = User()
+    object.posts = []
+
