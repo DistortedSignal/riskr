@@ -18,14 +18,14 @@ CREATE TABLE post
 (
     id                      INTEGER NOT NULL,
     user_id                 INTEGER NOT NULL,
-    title                   VARCHAR(140) NOT NULL,
+    title                   VARCHAR(140),
     body                    TEXT,
     posted_date             TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT post_id      PRIMARY KEY (id),
     CONSTRAINT user_fk      FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-CREATE INDEX user_index ON post (user_id);
+CREATE INDEX post_user_index ON post (user_id);
 
 # LEARN
 CREATE TABLE comment
@@ -39,4 +39,5 @@ CREATE TABLE comment
     CONSTRAINT user_fk      FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-CREATE INDEX post_index ON comment (post_id);
+CREATE INDEX comment_post_index ON comment (post_id);
+CREATE INDEX comment_user_index ON comment (user_id);
