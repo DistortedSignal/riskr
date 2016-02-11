@@ -12,6 +12,9 @@ import lib.template_lib as tl
 import lib.login_lib as login
 import lib.init_lib as init
 
+# TODO Write function that gets headers from request since that's where I'm
+# going to be putting the email/token.
+
 def get_size_of_dict(dict_to_size):
     size_in_bytes = sys.getsizeof(dict_to_size)
     for a in dict_to_size.keys():
