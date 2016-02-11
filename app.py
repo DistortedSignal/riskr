@@ -5,6 +5,8 @@ from flask import Flask, Response
 import sys
 import os
 
+import lib.template_lib as tl
+
 def get_size_of_dict(dict_to_size):
     size_in_bytes = sys.getsizeof(dict_to_size)
     for a in dict_to_size.keys():
@@ -63,14 +65,8 @@ def load_js(js_directory):
     return js_dictionary
 
 def render_main():
-    user = {'name': 'Tom Kelley'}
-    comment = {'user': user, 'text': 'This is comment text'}
-    post = {'user': user, 'title': 'This is post title', 
-    'body': 'This is the post body, which can be quite long.', 
-    'comments': [comment]}
-    context = {'user': user, 'posts': [post]}
     return template_dictionary['container'].render(
-        page_content=template_dictionary['main'].render(context=context))
+        page_content=tl.render_front_page(1, template_dictionary))
 
 app = Flask(__name__)
 
