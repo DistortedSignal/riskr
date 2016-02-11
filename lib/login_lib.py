@@ -6,9 +6,9 @@ def create_new_user(user_name, password, email_address):
     # TODO Make actual database call that stores user name, salt, pw hash,
     # and email address
 
-    return login_attempt(email_address, password)
+    return attempt_login(email_address, password)
 
-def login_attempt(email_address, password):
+def attempt_login(email_address, password):
     # TODO Database code to lookup user by email address, get id, salt, pw hash
     if bcrypt.hashpw(password, salt) == pw_hash:
         # TODO Generate a temporary token and embed it in the return value
