@@ -1,7 +1,6 @@
 CREATE TABLE user
 (
     id                      INTEGER NOT NULL,
-    username                VARCHAR(256) NOT NULL,
     salt                    VARCHAR(31) NOT NULL,
     password_hash           VARCHAR(62) NOT NULL,
     display_name            VARCHAR(128) NOT NULL,
