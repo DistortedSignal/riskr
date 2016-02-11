@@ -6,8 +6,6 @@ def render_user(user_id, template_dict):
     user = {'name': 'Tom'}
     # Render user
     out = template_dict['user'].render(user=user)
-    print('\nUser:')
-    print(out)
     return out
 
 def render_comment(comment_id, template_dict):
@@ -17,8 +15,6 @@ def render_comment(comment_id, template_dict):
     'posted_date': '$date_here'}
     comment['compiled_user'] = render_user(comment['user_id'], template_dict)
     out = template_dict['comment'].render(comment=comment)
-    print('\nComment:')
-    print(out)
     return out
 
 def render_post(post_id, template_dict):
@@ -37,8 +33,6 @@ def render_post(post_id, template_dict):
     # Get user based on user_id
     post['compiled_user'] = render_user(post['user_id'], template_dict)
     out = template_dict['post'].render(post=post)
-    print('\nPost:')
-    print(out)
     return out
 
 def render_front_page(user_id, template_dict):
@@ -50,6 +44,4 @@ def render_front_page(user_id, template_dict):
     render_post(3, template_dict), render_post(4, template_dict),
     render_post(5, template_dict)]
     out = template_dict['main'].render(compiled_posts=posts, user=user)
-    print('\nMain:')
-    print(out)
     return out
