@@ -6,13 +6,6 @@ import os
 
 # This is some bullshit.
 sys.path.append(os.sep.join(__file__.split(os.sep)[:-1]) + os.sep +
-    os.sep.join(['venv', 'lib']))
-sys.path.append(os.sep.join(__file__.split(os.sep)[:-1]) + os.sep +
-    os.sep.join(['venv', 'lib', 'plat-win']))
-sys.path.append(os.sep.join(__file__.split(os.sep)[:-1]) + os.sep +
-    os.sep.join(['venv', 'lib', 'lib-tk']))
-sys.path.append(os.sep.join(__file__.split(os.sep)[:-1]) + os.sep + 'venv')
-sys.path.append(os.sep.join(__file__.split(os.sep)[:-1]) + os.sep +
     os.sep.join(['venv', 'lib', 'site-packages']))
 
 import lib.template_lib as tl
