@@ -1,11 +1,9 @@
-<div>
+<div class="pull-right">
 <!-- put the user image here -->
-<p>{{ user.name|e }}</p>
+<h4>{{ user.name|e }}</h4>
 </div>
-
-<h1>Risks</h1>
-
-
+<br/>
+<h1>Feed</h1>
 <div>
 {% for post in compiled_posts %}
 <p>{{ post }}</p>
