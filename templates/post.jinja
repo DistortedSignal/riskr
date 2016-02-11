@@ -4,8 +4,7 @@
 <p>{{ post.body|e }}</p>
 <div>
 {% for comment in post.compiled_comments %}
-{{ comment }}
+{{ comment }}<br/>
 {% endfor %}
 </div>
-
 </div>
