@@ -1,6 +1,11 @@
-<div>{{ user }}</div>
+<div>{{ post.compiled_user }}</div>
 <div>
 <h4>{{ post.title|e }}</h4>
 <p>{{ post.body|e }}</p>
+<div>
+{% for comment in post.compiled_comments %}
+{{ comment }}
+{% endfor %}
+</div>
 
 </div>

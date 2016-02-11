@@ -1,13 +1,13 @@
 <div>
 <!-- put the user image here -->
-<p>{{ context.user.name|e }}</p>
+<p>{{ user.name|e }}</p>
 </div>
 
 <h1>Risks</h1>
 
 
 <div>
-{% for p in context.posts %}
+{% for post in compiled_posts %}
 <p>{{ post }}</p>
 {% endfor %}
 </div>
