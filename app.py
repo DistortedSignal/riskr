@@ -1,3 +1,4 @@
+from __future__ import print_function
 from jinja2 import Template
 from flask import Flask, Response
 
@@ -91,8 +92,9 @@ if __name__ == "__main__":
     template_dictionary = load_templates(os.getcwd() + os.sep + 'templates')
     css_dictionary = load_css(os.getcwd() + os.sep + 'css')
     js_dictionary = load_js(os.getcwd() + os.sep + 'js')
-    print "Estimated size of cached objects: " + str(
-        get_size_of_dict(template_dictionary) + 
-        get_size_of_dict(css_dictionary) + get_size_of_dict(js_dictionary)) + \
-    " bytes"
+    print("Estimated size of cached objects: " +
+        str(get_size_of_dict(template_dictionary) +
+            get_size_of_dict(css_dictionary) +
+            get_size_of_dict(js_dictionary)) +
+        " bytes")
     app.run()
