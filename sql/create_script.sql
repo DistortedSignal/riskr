@@ -1,12 +1,18 @@
 CREATE TABLE user
 (
     id                      INTEGER NOT NULL,
-    salt                    VARCHAR(31) NOT NULL,
-    password_hash           VARCHAR(62) NOT NULL,
+    salt                    VARCHAR(32) NOT NULL,
+    password_hash           VARCHAR(64) NOT NULL,
     display_name            VARCHAR(128) NOT NULL,
+    email_address           VARCHAR(512) NOT NULL,
+    token                   VARCHAR(256),
+    token_expire_date       TIMESTAMP WITH TIME ZONE,
     CONSTRAINT user_id      PRIMARY KEY (id),
     CONSTRAINT un_unique    UNIQUE (username)
 );
+
+# This will be used for login
+CREATE INDEX user_email_index ON user (email_address);
 
 # Currently this should be mated with PostgreSQL, so we're using TEXT. Make sure
 # that if we migrate databases that we change the column type to that DB's
@@ -24,6 +30,7 @@ CREATE TABLE post
     CONSTRAINT user_fk      FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
+# Used to look up users when we need to pair them with a comment
 CREATE INDEX post_user_index ON post (user_id);
 
 # LEARN
@@ -38,5 +45,7 @@ CREATE TABLE comment
     CONSTRAINT user_fk      FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
+# Used when we need to get all comments on a certain post
 CREATE INDEX comment_post_index ON comment (post_id);
+# Used to get all comments that a user has made
 CREATE INDEX comment_user_index ON comment (user_id);
