@@ -61,10 +61,6 @@ def load_js(js_directory):
     load_raw_file(js_directory, 'jquery.js', js_dictionary)
     return js_dictionary
 
-def get_static_file(content, mime_type):
-    resp = Response(content, mimetype=mime_type)
-    return resp
-
 def render_main():
     user = {'name': 'Tom Kelley'}
     comment = {'user': user, 'text': 'This is comment text'}
@@ -79,11 +75,11 @@ app = Flask(__name__)
 
 @app.route("/css/<css_file_name>")
 def load_css_file(css_file_name):
-    return get_static_file(css_dictionary[css_file_name], 'text/css')
+    return Response(css_dictionary[css_file_name], mimetype='text/css')
 
 @app.route("/js/<js_file_name>")
 def load_js_file(js_file_name):
-    return get_static_file(js_dictionary[js_file_name], 'text/javascript')
+    return Response(js_dictionary[js_file_name], mimetype='text/javascript')
 
 @app.route("/#")
 @app.route("/")
@@ -91,6 +87,7 @@ def index():
     return render_main()
 
 if __name__ == "__main__":
+    # TDOD Use the file dir, not the cwd
     template_dictionary = load_templates(os.getcwd() + os.sep + 'templates')
     css_dictionary = load_css(os.getcwd() + os.sep + 'css')
     js_dictionary = load_js(os.getcwd() + os.sep + 'js')
