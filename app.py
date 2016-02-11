@@ -40,6 +40,7 @@ def load_css(css_directory):
     # TODO Switch this based on cmd line flag
     load_raw_file(css_directory, 'bootstrap.css', css_dictionary)
     load_raw_file(css_directory, 'bootstrap-responsive.css', css_dictionary)
+    load_raw_file(css_directory, 'custom.css', css_dictionary)
     return css_dictionary
 
 def load_js(js_directory):
