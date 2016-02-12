@@ -2,6 +2,10 @@ from jinja2 import Template
 
 import os
 
+if not 'unicode' in dir(__builtins__):
+    def unicode(argument):
+        return argument
+
 def add_template_to_dict(template_dir, template_name, template_dict):
     template_dict[template_name] = Template(open(template_dir + os.sep +
         template_name + '.jinja').read())
