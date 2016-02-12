@@ -23,7 +23,7 @@ def get_size_of_dict(dict_to_size):
 
 def render_main():
     return template_dictionary['container'].render(
-        page_content=tl.render_front_page(1, template_dictionary))
+        page_content=tl.render_front_page(1, template_dictionary, None))
 
 app = Flask(__name__)
 
@@ -38,7 +38,11 @@ def load_js_file(js_file_name):
 @app.route("/#")
 @app.route("/")
 def index():
-    return render_main()
+    try:
+        return render_main()
+    except Exception as e:
+        print(str(e))
+
 
 if __name__ == "__main__":
     # TDOD Use the file dir, not the cwd
