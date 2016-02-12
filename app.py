@@ -1,12 +1,12 @@
 from __future__ import print_function
-from flask import Flask, Response
-
 import sys
 import os
 
 # This is some bullshit.
 sys.path.append(os.sep.join(__file__.split(os.sep)[:-1]) + os.sep +
     os.sep.join(['venv', 'lib', 'site-packages']))
+
+from flask import Flask, Response
 
 import lib.template_lib as tl
 import lib.login_lib as login
