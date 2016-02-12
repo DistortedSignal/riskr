@@ -40,6 +40,9 @@ def load_js_file(js_file_name):
 @app.route("/")
 def index():
     try:
+        # TODO At some point, generating the response will have to be moved back
+        # here so we can use the login lib to keep track of users by id and
+        # temporary token.
         return render_main()
     except Exception as e:
         print(str(traceback.format_exc()))
