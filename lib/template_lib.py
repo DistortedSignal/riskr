@@ -29,7 +29,7 @@ def render_comment(comment_id, template_dict, conn_db):
         comment = {'user_id': 1, 'comment_body': 'This is comment', 
         'posted_date': '$date_here'}
     comment['compiled_user'] = render_user(comment['user_id'], template_dict, 
-        db_conn)
+        conn_db)
     return template_dict['comment'].render(comment=comment)
 
 def render_post(post_id, template_dict, conn_db):
@@ -59,11 +59,11 @@ def render_post(post_id, template_dict, conn_db):
         results_transformed = [1,2,3]
 
     post['compiled_comments'] = map(
-        lambda x: render_comment(x, template_dict, db_conn),
+        lambda x: render_comment(x, template_dict, conn_db),
         results_transformed)
 
     # Get user based on user_id
-    post['compiled_user'] = render_user(post['user_id'], template_dict, db_conn)
+    post['compiled_user'] = render_user(post['user_id'], template_dict, conn_db)
     return template_dict['post'].render(post=post)
 
 def render_front_page(user_id, template_dict, conn_db):
@@ -82,14 +82,14 @@ def render_front_page(user_id, template_dict, conn_db):
         cursor = conn_db.cursor()
         cursor.execute("SELECT id FROM post") # Limit this in some way, shape,
         #                                       or form
-        results = db_conn.fetchall()
+        results = conn_db.fetchall()
         # TODO
         cursor.close()
     except AttributeError:
         results_transformed = [1,2,3,4,5]
 
     posts = map(
-        lambda x: render_post(x, template_dict, db_conn),
+        lambda x: render_post(x, template_dict, conn_db),
         results_transformed)
     
     return template_dict['main'].render(compiled_posts=posts, user=user)
