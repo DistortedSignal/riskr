@@ -7,7 +7,8 @@ def create_and_store_tmp_token(user_id, db_conn):
     # Get system time and a nonce
     now = time.time() # Seconds.milliseconds since epoch
     nonce = random.random()
-    token = hashlib.sha256(str(user_id) + str(now) + str(nonce)).hexdigest()
+    token = hashlib.sha256(str(now) + '|' + str(nonce) + '|' +
+        str(user_id)).hexdigest()
 
     # Store the temporary token and the time the token will expire
     cursor = db_conn.cursor()
