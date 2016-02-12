@@ -9,7 +9,7 @@ def render_user(user_id, template_dict, conn_db):
         results = conn_db.fetchall()
         # TODO Replace this logic once the database is integrated
         user = {'name': 'display_name'}
-    except TypeError:
+    except AttributeError:
         # To make it so the db being mocked out still works.
         user = {'name': 'Tom'}
     # Render user
@@ -25,7 +25,7 @@ def render_comment(comment_id, template_dict, conn_db):
         results = conn_db.fetchall()
         # TODO Construct comment from results
         cursor.close()
-    except TypeError:
+    except AttributeError:
         comment = {'user_id': 1, 'comment_body': 'This is comment', 
         'posted_date': '$date_here'}
     comment['compiled_user'] = render_user(comment['user_id'], template_dict, 
@@ -43,7 +43,7 @@ def render_post(post_id, template_dict, conn_db):
         results = conn_db.fetchall()
         # TODO Construct post from results
         cursor.close()
-    except TypeError:
+    except AttributeError:
         post = {'user_id': 1, 'title': 'This is post title', 'body': 
         'This is a super long post body, and it can go on for a long way.',
         'posted_date': '$date_here'}
@@ -55,7 +55,7 @@ def render_post(post_id, template_dict, conn_db):
             {'post_id': post_id})
         results = conn_db.fetchall()
         cursor.close()
-    except TypeError:
+    except AttributeError:
         results_transformed = [1,2,3]
 
     post['compiled_comments'] = map(
@@ -74,7 +74,7 @@ def render_front_page(user_id, template_dict, conn_db):
             {'user_id': user_id})
         results = conn_db.fetchall()
         cursor.close()
-    except TypeError:
+    except AttributeError:
         user = {'name': 'Tom'}
 
     # Get a list of posts from the database
@@ -85,7 +85,7 @@ def render_front_page(user_id, template_dict, conn_db):
         results = db_conn.fetchall()
         # TODO
         cursor.close()
-    except TypeError:
+    except AttributeError:
         results_transformed = [1,2,3,4,5]
 
     posts = map(
