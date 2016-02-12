@@ -1,10 +1,10 @@
 CREATE TABLE user
 (
     id                      INTEGER NOT NULL,
-    salt                    VARCHAR(32) NOT NULL,
-    password_hash           VARCHAR(64) NOT NULL,
     display_name            VARCHAR(128) NOT NULL,
     email_address           VARCHAR(512) NOT NULL,
+    password_hash           VARCHAR(64) NOT NULL,
+    salt                    VARCHAR(32) NOT NULL,
     token                   VARCHAR(256),
     token_expire_date       TIMESTAMP WITH TIME ZONE,
     CONSTRAINT user_id      PRIMARY KEY (id),
