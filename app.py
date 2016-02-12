@@ -1,4 +1,5 @@
 from __future__ import print_function
+import traceback
 import sys
 import os
 
@@ -41,7 +42,8 @@ def index():
     try:
         return render_main()
     except Exception as e:
-        print(str(e))
+        print(str(traceback.format_exc()))
+        raise
 
 
 if __name__ == "__main__":
