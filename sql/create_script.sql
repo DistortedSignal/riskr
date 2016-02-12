@@ -8,7 +8,7 @@ CREATE TABLE user
     token                   VARCHAR(64),
     token_expire_date       TIMESTAMP WITH TIME ZONE,
     CONSTRAINT user_id      PRIMARY KEY (id),
-    CONSTRAINT un_unique    UNIQUE (username)
+    CONSTRAINT un_unique    UNIQUE (email_address)
 );
 
 # This will be used for login
