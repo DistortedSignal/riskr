@@ -1,6 +1,6 @@
 import hashlib
-import random
 import bcrypt
+import random
 import time
 
 def create_and_store_tmp_token(user_id, db_conn):

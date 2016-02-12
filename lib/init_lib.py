@@ -7,8 +7,8 @@ if not 'unicode' in dir(__builtins__):
         return argument
 
 def add_template_to_dict(template_dir, template_name, template_dict):
-    template_dict[template_name] = Template(open(template_dir + os.sep +
-        template_name + '.jinja').read())
+    template_dict[template_name] = Template(unicode(open(template_dir + os.sep +
+        template_name + '.jinja').read()))
 
 # Engineering tradeoff: I REALLY don't want to read these files from disk every
 # time that I need to serve a page, so I'm going to load the files at app
