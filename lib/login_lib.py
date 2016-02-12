@@ -13,7 +13,7 @@ def create_and_store_tmp_token(user_id, db_conn):
     # Store the temporary token and the time the token will expire
     cursor = db_conn.cursor()
     # TODO Figure out how to dates with python, psycopg2, and Postgres
-    cursor.execute("UDPATE user SET token=%(token)s, " + 
+    cursor.execute("UPDATE user SET token=%(token)s, " + 
         "token_expire_date=%(token_expire_date)s " +
         "WHERE id=%(user_id)s",
         {'token': token, 
@@ -35,6 +35,7 @@ def create_new_user(user_name, email_address, password, db_conn):
     # Caution, weird formatting ahead! I formatted the code like this to make
     # it easier to read and understand what all the args do. I would prefer to
     # leave this code as it is rather than changing it to named arguments.
+    # TODO Wrap this in a try/except to ensure that email address is unique.
     cursor.execute("INSERT INTO user " +
         "(display_name, email_address, password_hash, salt) VALUES" +
         "(%s,           %s,            %s,            %s)",
