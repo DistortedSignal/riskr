@@ -1,5 +1,8 @@
 from __future__ import print_function
 
+# At some point, investigate ORMs so we're not creating and destroying cursors
+# at a furious rate.
+
 def render_user(user_id, template_dict, conn_db):
     # Get User from database based on user id
     try:
@@ -9,6 +12,7 @@ def render_user(user_id, template_dict, conn_db):
         results = conn_db.fetchall()
         # TODO Replace this logic once the database is integrated
         user = {'name': 'display_name'}
+        cursor.close()
     except AttributeError:
         # To make it so the db being mocked out still works.
         user = {'name': 'Tom'}
