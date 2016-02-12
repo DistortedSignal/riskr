@@ -74,4 +74,3 @@ def verify_logged_in_user(user_id, token, db_conn):
     if token == stored_token: # TODO and $now < token_expire_date
         # TODO Generate a new temporary token and embed it in the return value
         return [user_id, create_and_store_tmp_token(user_id, db_conn)]
-
