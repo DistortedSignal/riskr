@@ -12,9 +12,13 @@ def create_and_store_tmp_token(user_id, db_conn):
     # Store the temporary token and the time the token will expire
     cursor = db_conn.cursor()
     # TODO Figure out how to dates with python, psycopg2, and Postgres
-    cursor.execute("UDPATE user SET token=%s, token_expire_date=%s " +
-        "WHERE id=%s",              (token,   now, # TODO add 5 minutes to "now"
-            user_id))
+    cursor.execute("UDPATE user SET token=%(token)s, " + 
+        "token_expire_date=%(token_expire_date)s " +
+        "WHERE id=%(user_id)s",
+        {'token': token, 
+        'token_expire_date': now, # TODO now + 5 minutes
+        'user_id': user_id}
+        )
     db_conn.commit()
     cursor.close()
 
@@ -28,7 +32,8 @@ def create_new_user(user_name, email_address, password, db_conn):
     # TODO Should we pass in connections or cursors? Investigate.
     cursor = db_conn.cursor()
     # Caution, weird formatting ahead! I formatted the code like this to make
-    # it easier to read and understand what all the args do.
+    # it easier to read and understand what all the args do. I would prefer to
+    # leave this code as it is rather than changing it to named arguments.
     cursor.execute("INSERT INTO user " +
         "(display_name, email_address, password_hash, salt) VALUES" +
         "(%s,           %s,            %s,            %s)",
@@ -41,7 +46,8 @@ def create_new_user(user_name, email_address, password, db_conn):
 def attempt_login(email_address, password, db_conn):
     cursor = db_conn.cursor()
     cursor.execute("SELECT id, password_hash, salt FROM user WHERE " +
-        "email_address=%s", (email_address))
+        "email_address=%(email)s",
+        {'email': email_address})
     row_tuples = cursor.fetchall()
     cursor.close()
     # TODO Lots of stuff here
@@ -57,8 +63,9 @@ def attempt_login(email_address, password, db_conn):
 def verify_logged_in_user(user_id, token, db_conn):
     # TODO Get user id and token from database based on email address
     cursor = db_conn.cursor()
-    cursor.execute("SELECT token, token_expire_date FROM user WHERE id=%s",
-        (user_id))
+    cursor.execute("SELECT token, token_expire_date FROM user " +
+        "WHERE id=%(user_id)s",
+        {'user_id': user_id})
     results = db_conn.fetchall()
     cursor.close()
 
