@@ -51,4 +51,5 @@ if __name__ == "__main__":
             get_size_of_dict(css_dictionary) +
             get_size_of_dict(js_dictionary)) +
         " bytes")
+    print("Tom, if you haven't profiled this yet, I'm gonna haunt your ass.")
     app.run()
