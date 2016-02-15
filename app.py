@@ -26,11 +26,11 @@ def get_size_of_dict(dict_to_size):
 def render_nav_bar(current_page):
     # TODO Make this better
     if current_page == 'home':
-        return template_dictionary['nav_bar'].render(home='class="active"', login='',
-            contact='')
+        return template_dictionary['nav_bar'].render(home='class="active"', 
+            login='', contact='')
     elif current_page == 'login':
-        return template_dictionary['nav_bar'].render(home='', login='class="active"',
-            contact='')
+        return template_dictionary['nav_bar'].render(home='',
+            login='class="active"', contact='')
     elif current_page == 'contact':
         return template_dictionary['nav_bar'].render(home='', login='',
             contact='class="active"')
@@ -38,10 +38,16 @@ def render_nav_bar(current_page):
         raise LookupError('Page lookup was outside expected values ' +
             '[home, main, contact]')
 
-def render_main():
+def render_main_no_user():
     return template_dictionary['container'].render(
-        page_content=tl.render_front_page('user_id', template_dictionary, 
+        page_content=tl.render_front_page_without_user(template_dictionary, 
             db_conn), nav_bar=render_nav_bar('home'))
+
+def render_main_with_user(user_token):
+    return template_dictionary['container'].render(
+        page_content=tl.render_front_page_with_user(user_token['user_id'], 
+            template_dictionary, db_conn), 
+        nav_bar=render_nav_bar('home'))
 
 def render_login():
     return template_dictionary['container'].render(
@@ -65,7 +71,7 @@ def index():
         # TODO At some point, generating the response will have to be moved back
         # here so we can use the login lib to keep track of users by id and
         # temporary token.
-        return render_main()
+        return render_main_no_user()
     except Exception as e:
         print(str(traceback.format_exc()))
         # TODO Create a better error message than HTTP 500.
@@ -84,6 +90,13 @@ def login_page():
         print(str(traceback.format_exc()))
         # TODO Create a better error message than HTTP 500.
 
+@app.route("/login_user", methods=['POST'])
+def attempt_user_login():
+    token = login.attempt_login('user_email', 'password', db_conn)
+    if token:
+        return render_main_with_user(token)
+    else:
+        return ('', 403, ('',))
 
 @app.route("/post", methods=['POST'])
 def post():
