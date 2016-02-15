@@ -101,9 +101,22 @@ def render_front_page_with_user(user_id, template_dict, db_conn):
     return render_front_page_body(user['name'], template_dict, db_conn)
 
 def render_front_page_without_user(template_dict, db_conn):
-    user = {'name': 'Anonymous'}
-
-    return render_front_page_body(user['name'], template_dict, db_conn)
+    return render_front_page_body('Anonymous', template_dict, db_conn)
 
 def render_login(template_dict):
     return template_dict['login'].render()
+
+def render_nav_bar(current_page, template_dict):
+    # TODO Make this better
+    if current_page == 'home':
+        return template_dict['nav_bar'].render(home='class="active"', 
+            login='', contact='')
+    elif current_page == 'login':
+        return template_dict['nav_bar'].render(home='',
+            login='class="active"', contact='')
+    elif current_page == 'contact':
+        return template_dict['nav_bar'].render(home='', login='',
+            contact='class="active"')
+    else:
+        raise LookupError('Page lookup was outside expected values ' +
+            '[home, main, contact]')

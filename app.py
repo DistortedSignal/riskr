@@ -1,5 +1,6 @@
 from __future__ import print_function
 import traceback
+import time
 import sys
 import os
 
@@ -23,36 +24,21 @@ def get_size_of_dict(dict_to_size):
         size_in_bytes += sys.getsizeof(dict_to_size[a])
     return size_in_bytes
 
-def render_nav_bar(current_page):
-    # TODO Make this better
-    if current_page == 'home':
-        return template_dictionary['nav_bar'].render(home='class="active"', 
-            login='', contact='')
-    elif current_page == 'login':
-        return template_dictionary['nav_bar'].render(home='',
-            login='class="active"', contact='')
-    elif current_page == 'contact':
-        return template_dictionary['nav_bar'].render(home='', login='',
-            contact='class="active"')
-    else:
-        raise LookupError('Page lookup was outside expected values ' +
-            '[home, main, contact]')
-
 def render_main_no_user():
     return template_dictionary['container'].render(
         page_content=tl.render_front_page_without_user(template_dictionary, 
-            db_conn), nav_bar=render_nav_bar('home'))
+            db_conn), nav_bar=tl.render_nav_bar('home', template_dictionary))
 
 def render_main_with_user(user_token):
     return template_dictionary['container'].render(
         page_content=tl.render_front_page_with_user(user_token['user_id'], 
             template_dictionary, db_conn), 
-        nav_bar=render_nav_bar('home'))
+        nav_bar=tl.render_nav_bar('home', template_dictionary))
 
 def render_login():
     return template_dictionary['container'].render(
         page_content=tl.render_login(template_dictionary),
-        nav_bar=render_nav_bar('login'))
+        nav_bar=tl.render_nav_bar('login', template_dictionary))
 
 app = Flask(__name__)
 
@@ -68,14 +54,16 @@ def load_js_file(js_file_name):
 def index():
     try:
         # new_key = login.verify_logged_in_user(1, 'a', db_conn)
-        # TODO At some point, generating the response will have to be moved back
-        # here so we can use the login lib to keep track of users by id and
-        # temporary token.
-        return render_main_no_user()
+        start = time.time()
+        rendered = render_main_no_user()
+        print("Rendered in " + str(time.time() - start) + " sec.")
+        return rendered
     except Exception as e:
         print(str(traceback.format_exc()))
         # TODO Create a better error message than HTTP 500.
 
+# TODO Merge login_page() and attempt_user_login, switch on HTTP method so I can
+# have only one method that looks like a login.
 @app.route("/login")
 def login_page():
     try:
@@ -98,25 +86,26 @@ def attempt_user_login():
     else:
         return ('', 403, ('',))
 
+@app.route("/create_user", methods=['POST'])
+def create_user():
+    if 'password' == 'confirm password':
+        token = login.create_new_user('display_name', 'email_address',
+            'password', db_conn)
+        # TODO Redirect the user to the main form.
+
 @app.route("/post", methods=['POST'])
 def post():
-    print("Caught a post request")
     try:
         new_key = login.verify_logged_in_user('user_id', 'a', db_conn)
-        print("Got new key")
         if new_key:
-            print("New Key was valid")
             post.post('user_id', 'This is title', 'This is body', db_conn)
-            print("Posted post")
             return ('', 201, new_key)
         else:
             # TODO Ask the user to login, then re-attempt to post the message.
             pass
     except e:
-        print('Caught exception')
         print(str(traceback.format_exc()))
 
-    print('After try block, returning 404.')
     return ('', 404, ('',))
 
 @app.route("/comment", methods=['POST'])
@@ -130,10 +119,8 @@ def comment():
             # TODO Ask the user to login, then re-attempt to post the message.
             pass
     except e:
-        print('Caught exception')
         print(str(traceback.format_exc()))
 
-    print('After try block, returning 404.')
     return ('', 404, ('',))
 
 if __name__ == "__main__":
