@@ -97,3 +97,6 @@ def render_front_page(user_id, template_dict, conn_db):
         results_transformed)
     
     return template_dict['main'].render(compiled_posts=posts, user=user)
+
+def render_login(template_dict):
+    return template_dict['login'].render()
