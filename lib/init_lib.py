@@ -21,6 +21,8 @@ def load_templates(template_directory):
     add_template_to_dict(template_directory, 'comment', template_dictionary)
     add_template_to_dict(template_directory, 'comment_box', template_dictionary)
     add_template_to_dict(template_directory, 'main', template_dictionary)
+    add_template_to_dict(template_directory, 'login', template_dictionary)
+    add_template_to_dict(template_directory, 'nav_bar', template_dictionary)
     return template_dictionary
 
 # Yes, this function uses side effects of adding items to a dict to influence
@@ -57,3 +59,7 @@ def load_js(js_directory):
         js_dictionary)
     load_raw_file(js_directory, 'jquery.js', js_dictionary)
     return js_dictionary
+
+def create_db_conn():
+    # TODO Create a db_connection
+    return None
