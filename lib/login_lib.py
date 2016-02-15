@@ -1,14 +1,15 @@
-import hashlib
 import bcrypt
-import random
-import time
+import os
 
 def create_and_store_tmp_token(user_id, db_conn):
-    # Get system time and a nonce
-    now = time.time() # Seconds.milliseconds since epoch
-    nonce = random.random()
-    token = hashlib.sha256(str(now) + '|' + str(nonce) + '|' +
-        str(user_id)).hexdigest()
+    # Get 32 BYTES (256 BITS) of cryptographically random data to use as a 
+    # session key. Since OWASP recommends 64 bits 
+    # (https://www.owasp.org/index.php/Session_Management_Cheat_Sheet#Session_ID_Entropy), 
+    # this seems fine.
+    # NOTE: The amount of data that can be generated here can be changed at any
+    # time without affecting the overall algorithm. Please ensure that the 
+    # database is changed to accommodate the change before pushing to prod.
+    token = str(os.urandom(32).encode('hex'))
 
     # Store the temporary token and the time the token will expire
     cursor = db_conn.cursor()
@@ -63,7 +64,6 @@ def attempt_login(email_address, password, db_conn):
     return False
 
 def verify_logged_in_user(user_id, token, db_conn):
-    # TODO Get user id and token from database based on email address
     cursor = db_conn.cursor()
     cursor.execute("SELECT token, token_expire_date FROM user " +
         "WHERE id=%(user_id)s",
@@ -72,5 +72,5 @@ def verify_logged_in_user(user_id, token, db_conn):
     cursor.close()
 
     if token == stored_token: # TODO and $now < token_expire_date
-        # TODO Generate a new temporary token and embed it in the return value
+        # Generate a new temporary token and embed it in the return value
         return [user_id, create_and_store_tmp_token(user_id, db_conn)]
