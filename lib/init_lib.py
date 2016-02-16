@@ -1,5 +1,8 @@
 from jinja2 import Template
 
+import psycopg2
+
+import json
 import os
 
 if not 'unicode' in dir(__builtins__):
@@ -60,6 +63,13 @@ def load_js(js_directory):
     load_raw_file(js_directory, 'jquery.js', js_dictionary)
     return js_dictionary
 
-def create_db_conn():
+def create_db_conn(db_file_location):
     # TODO Create a db_connection
+    with open(db_file_location, 'r') as db_file:
+        db_dict = json.loads(db_file.read())
+        return psycopg2.connect(database=db_dict['database'],
+            user=db_dict['user'], password=db_dict.get('password', 'password'),
+            host=db_dict.get('host', 'localhost'),
+            port=db_dict.get('port', 5432))
+
     return None
