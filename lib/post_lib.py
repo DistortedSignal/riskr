@@ -1,7 +1,7 @@
 def post(user_id, title, post_body, db_conn):
     cursor = db_conn.cursor()
     # TODO Teach me how to eye_dee / teach me, teach me how to eye_dee
-    cursor.execute("INSERT INTO post " +
+    cursor.execute("INSERT INTO riskr.post " +
         "(user_id,  title,     body,     posted_date) VALUES " +
         "(%(user)s, %(title)s, %(body)s, %(date)s)",
         {'user': user_id,
@@ -17,7 +17,7 @@ def post(user_id, title, post_body, db_conn):
 def comment(post_id, user_id, comment_body, db_conn):
     cursor = db_conn.cursor()
     # TODO Such id, so unique, very key, wow
-    cursor.execute("INSERT INTO comment " +
+    cursor.execute("INSERT INTO riskr.comment " +
         "(post_id,  user_id,  comment_body, posted_date) VALUES " +
         "(%(post)s, %(user)s, %(comment)s,  %(date)s)",
         {
