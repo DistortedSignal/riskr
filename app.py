@@ -121,12 +121,13 @@ def comment():
     return ('', 404, ('',))
 
 if __name__ == "__main__":
-    # TDOD Use the file dir, not the cwd
-    template_dictionary = init.load_templates(os.getcwd() + os.sep +
+    file_path = os.sep.join(__file__.split(os.sep)[:-1])
+    print(file_path)
+    template_dictionary = init.load_templates(file_path + os.sep +
         'templates')
-    css_dictionary = init.load_css(os.getcwd() + os.sep + 'css')
-    js_dictionary = init.load_js(os.getcwd() + os.sep + 'js')
-    db_conn = init.create_db_conn()
+    css_dictionary = init.load_css(file_path + os.sep + 'css')
+    js_dictionary = init.load_js(file_path + os.sep + 'js')
+    db_conn = init.create_db_conn(file_path + os.sep + 'db.properties')
     print("Estimated size of cached objects: " +
         str(get_size_of_dict(template_dictionary) +
             get_size_of_dict(css_dictionary) +
