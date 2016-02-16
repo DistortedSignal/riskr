@@ -18,12 +18,6 @@ import lib.post_lib as post
 # TODO Write function that gets headers from request since that's where I'm
 # going to be putting the user id/token.
 
-def get_size_of_dict(dict_to_size):
-    size_in_bytes = sys.getsizeof(dict_to_size)
-    for a in dict_to_size.keys():
-        size_in_bytes += sys.getsizeof(dict_to_size[a])
-    return size_in_bytes
-
 def render_main_no_user():
     return template_dictionary['container'].render(
         page_content=tl.render_front_page_without_user(template_dictionary, 
@@ -127,10 +121,4 @@ if __name__ == "__main__":
     css_dictionary = init.load_css(os.getcwd() + os.sep + 'css')
     js_dictionary = init.load_js(os.getcwd() + os.sep + 'js')
     db_conn = init.create_db_conn()
-    print("Estimated size of cached objects: " +
-        str(get_size_of_dict(template_dictionary) +
-            get_size_of_dict(css_dictionary) +
-            get_size_of_dict(js_dictionary)) +
-        " bytes")
-    print("Tom, if you haven't profiled this yet, I'm gonna haunt your ass.")
     app.run()
