@@ -54,10 +54,7 @@ def load_js_file(js_file_name):
 def index():
     try:
         # new_key = login.verify_logged_in_user(1, 'a', db_conn)
-        start = time.time()
-        rendered = render_main_no_user()
-        print("Rendered in " + str(time.time() - start) + " sec.")
-        return rendered
+        return render_main_no_user()
     except Exception as e:
         print(str(traceback.format_exc()))
         # TODO Create a better error message than HTTP 500.
