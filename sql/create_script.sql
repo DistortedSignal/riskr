@@ -2,7 +2,7 @@
 
 CREATE TABLE riskr.user
 (
-    id                      INTEGER NOT NULL,
+    id                      SERIAL,
     display_name            VARCHAR(128) NOT NULL,
     email_address           VARCHAR(512) NOT NULL,
     password_hash           VARCHAR(64) NOT NULL,
@@ -23,7 +23,7 @@ CREATE INDEX user_email_index ON riskr.user (email_address);
 -- column.
 CREATE TABLE riskr.post
 (
-    id                      INTEGER NOT NULL,
+    id                      SERIAL,
     user_id                 INTEGER NOT NULL,
     title                   VARCHAR(140),
     body                    TEXT,
@@ -38,7 +38,7 @@ CREATE INDEX post_user_index ON riskr.post (user_id);
 -- LEARN
 CREATE TABLE riskr.comment
 (
-    id                      INTEGER NOT NULL,
+    id                      SERIAL,
     post_id                 INTEGER NOT NULL,
     user_id                 INTEGER NOT NULL,
     comment_body            TEXT NOT NULL,
