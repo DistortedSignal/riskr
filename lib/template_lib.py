@@ -7,7 +7,8 @@ def render_user(user_id, template_dict, db_conn):
     # Get User from database based on user id
     try:
         cursor = db_conn.cursor()
-        cursor.execute("SELECT display_name FROM user WHERE id=%(user_id)s",
+        cursor.execute("SELECT display_name FROM riskr.user WHERE " +
+            "id=%(user_id)s",
             {'user_id': user_id})
         results = db_conn.fetchall()
         # TODO Replace this logic once the database is integrated
@@ -24,7 +25,7 @@ def render_comment(comment_id, template_dict, db_conn):
     try:
         cursor = db_conn.cursor()
         cursor.execute("SELECT user_id, comment_body, posted_date FROM " +
-            "comment WHERE comment_id=%(comment_id)s", 
+            "riskr.comment WHERE id=%(comment_id)s", 
             {'comment_id': comment_id})
         results = db_conn.fetchall()
         # TODO Construct comment from results
@@ -41,8 +42,8 @@ def render_post(post_id, template_dict, db_conn):
     # TODO Remove try blocks so I can use the same cursor twice.
     try:
         cursor = db_conn.cursor()
-        cursor.execute("SELECT user_id, title, body, posted_date FROM post" +
-            "WHERE id=%(post_id)s",
+        cursor.execute("SELECT user_id, title, body, posted_date " +
+            "FROM riskr.post WHERE id=%(post_id)s",
             {'post_id': post_id})
         results = db_conn.fetchall()
         # TODO Construct post from results
@@ -55,7 +56,7 @@ def render_post(post_id, template_dict, db_conn):
     # Get comment list from database based on post id
     try:
         cursor = db_conn.cursor()
-        cursor.execute("SELECT id FROM comment WHERE post_id=%(post_id)s",
+        cursor.execute("SELECT id FROM riskr.comment WHERE post_id=%(post_id)s",
             {'post_id': post_id})
         results = db_conn.fetchall()
         cursor.close()
@@ -73,8 +74,7 @@ def render_post(post_id, template_dict, db_conn):
 def render_front_page_body(user_name, template_dict, db_conn):
     try:
         cursor = db_conn.cursor()
-        cursor.execute("SELECT id FROM post") # Limit this in some way, shape,
-        #                                       or form
+        cursor.execute("SELECT id FROM riskr.post") # TODO Limit this
         results = db_conn.fetchall()
         # TODO
         cursor.close()
@@ -91,7 +91,8 @@ def render_front_page_with_user(user_id, template_dict, db_conn):
     # Get User from database based on id
     try:
         cursor = db_conn.cursor()
-        cursor.execute("SELECT display_name FROM user WHERE id=%(user_id)s",
+        cursor.execute("SELECT display_name FROM riskr.user WHERE " +
+            "id=%(user_id)s",
             {'user_id': user_id})
         results = db_conn.fetchall()
         cursor.close()

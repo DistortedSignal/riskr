@@ -17,7 +17,7 @@ def create_and_store_tmp_token(user_id, db_conn):
     # Store the temporary token and the time the token will expire
     cursor = db_conn.cursor()
     # TODO Figure out how to dates with python, psycopg2, and Postgres
-    cursor.execute("UPDATE user SET token=%(token)s, " + 
+    cursor.execute("UPDATE riskr.user SET token=%(token)s, " + 
         "token_expire_date=%(token_expire_date)s " +
         "WHERE id=%(user_id)s",
         {
@@ -39,7 +39,7 @@ def create_new_user(user_name, email_address, password, db_conn):
 
     # TODO Wrap this in a try/except to ensure that email address is unique.
     # TODO How is id formed?
-    cursor.execute("INSERT INTO user " +
+    cursor.execute("INSERT INTO riskr.user " +
         "(display_name, email_address, password_hash, salt) VALUES" +
         "(%(name)s,     %(email)s,     %(pw_hash)s,   %(salt)s)",
         {
@@ -56,7 +56,7 @@ def create_new_user(user_name, email_address, password, db_conn):
 
 def attempt_login(email_address, password, db_conn):
     cursor = db_conn.cursor()
-    cursor.execute("SELECT id, password_hash, salt FROM user WHERE " +
+    cursor.execute("SELECT id, password_hash, salt FROM riskr.user WHERE " +
         "email_address=%(email)s",
         {'email': email_address})
     row_tuples = cursor.fetchall()
@@ -73,7 +73,7 @@ def attempt_login(email_address, password, db_conn):
 
 def verify_logged_in_user(user_id, token, db_conn):
     cursor = db_conn.cursor()
-    cursor.execute("SELECT token, token_expire_date FROM user " +
+    cursor.execute("SELECT token, token_expire_date FROM riskr.user " +
         "WHERE id=%(user_id)s",
         {'user_id': user_id})
     results = db_conn.fetchall()
